@@ -14,6 +14,8 @@ public class MainActivity extends AppCompatActivity {
     private View mSelectedPhotoLayout;
     private ImageView mSelectedPhoto;
 
+    private Uri mSelectedPhotoUri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,15 +37,24 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(chooser, REQ_PICK_PHOTO);
     }
 
+    public void share(View view) {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("image/*");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, mSelectedPhotoUri);
+
+        Intent chooser = Intent.createChooser(shareIntent, getString(R.string.text_share));
+        startActivity(chooser);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQ_PICK_PHOTO && resultCode == RESULT_OK) {
-            Uri selectedPhotoUri = data.getData();
+            mSelectedPhotoUri = data.getData();
 
             mSelectedPhotoLayout.setVisibility(View.VISIBLE);
-            mSelectedPhoto.setImageURI(selectedPhotoUri);
+            mSelectedPhoto.setImageURI(mSelectedPhotoUri);
         }
     }
 }
