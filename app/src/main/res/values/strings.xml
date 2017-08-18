@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Pick Me</string>
+    <string name="text_pick_photo">Pick a photo to share</string>
 </resources>
